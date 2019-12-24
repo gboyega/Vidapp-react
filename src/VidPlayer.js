@@ -27,7 +27,7 @@ class VidPlayer extends Component{
       fetch(url).then(response => response.json())
       .then(data => {
          let firstVideo = data.items.shift();
-         this.setState({...this.state, mainVideo:firstVideo, suggestedVideos:data.items});
+         this.setState({...this.state, mainVideo:firstVideo.id.videoId, suggestedVideos:data.items});
         
       })
     )
@@ -47,7 +47,7 @@ class VidPlayer extends Component{
   }
 
   render(){
-    console.log(this.state.mainVideo);
+    console.log(this.state.mainVideo, process.env.REACT_APP_API_KEY);
     return (
       <div>
         <p></p>
@@ -65,13 +65,13 @@ class VidPlayer extends Component{
             </Form.Group>
           </Form>
 
-          <Embed id={this.state.mainVideo.id} placeholder="" source="youtube" />
+          <Embed id={this.state.mainVideo} placeholder="" source="youtube" />
 
           <Divider horizontal>Suggestions</Divider>
 
           <Grid doubling columns={3}>
-            {this.state.suggestedVideos.map(video => (
-              <Suggestion video={video} changeVideo={this.changeVideo} />
+            {this.state.suggestedVideos.map((video, i) => (
+              <Suggestion video={video} changeVideo={this.changeVideo} key={i} />
             ))}
           </Grid>
         </Container>
